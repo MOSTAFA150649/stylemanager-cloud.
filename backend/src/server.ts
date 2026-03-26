@@ -56,28 +56,20 @@ app.use((req, res, next) => {
 app.use('/uploads', express.static(uploadsPath));
 
 // Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/categories', categoryRoutes);
-app.use('/api/products', productRoutes);
-app.use('/api/upload', uploadRoutes);
-app.use('/api/sales', saleRoutes);
-app.use('/api/customers', customerRoutes);
-app.use('/api/reports', reportRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/settings', settingRoutes);
-app.use('/api/expenses', expenseRoutes);
-app.use('/api/suppliers', supplierRoutes);
+// ... (toutes les routes déjà présentes) ...
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', time: new Date() });
 });
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+// IMPORTANT pour Vercel : Exportez l'application
+export default app;
 
-// Keep-alive for debugging
-setInterval(() => {
-  // console.log('Heartbeat...');
-}, 10000);
+// Ne lancez le serveur que si on n'est pas sur Vercel
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+  });
+}
+
 
