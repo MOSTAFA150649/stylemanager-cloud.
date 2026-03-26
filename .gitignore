@@ -1,0 +1,43 @@
+# Dependances
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+
+# Production / Build
+dist/
+dist-exe/
+build/
+.next/
+out/
+
+# Environment Variables (CRITIQUE : Ne jamais envoyer ces fichiers sur GitHub)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Database
+*.db
+*.db-journal
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Electron
+release/
+*.exe
+*.zip
+
+# IDEs
+.vscode/
+.idea/

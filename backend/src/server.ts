@@ -1,0 +1,83 @@
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { PrismaClient } from '@prisma/client';
+import authRoutes from './routes/auth.routes';
+
+import categoryRoutes from './routes/category.routes';
+import productRoutes from './routes/product.routes';
+import uploadRoutes from './routes/upload.routes';
+import saleRoutes from './routes/sale.routes';
+import customerRoutes from './routes/customer.routes';
+import reportRoutes from './routes/report.routes';
+import userRoutes from './routes/user.routes';
+import settingRoutes from './routes/setting.routes';
+import expenseRoutes from './routes/expense.routes';
+import supplierRoutes from './routes/supplier.routes';
+import path from 'path';
+import fs from 'fs';
+
+dotenv.config();
+
+const userDataPath = process.env.USER_DATA_PATH;
+
+// Database configuration for Electron
+if (userDataPath && (!process.env.DATABASE_URL || !process.env.DATABASE_URL.startsWith('postgresql'))) {
+  const dbPath = path.join(userDataPath, 'stylemanager.db');
+  process.env.DATABASE_URL = `file:${dbPath}`;
+  console.log(`Using local database at: ${dbPath}`);
+} else {
+  console.log(`Using database: ${process.env.DATABASE_URL?.split('@')[1] || 'Cloud DB'}`);
+}
+
+const app = express();
+const prisma = new PrismaClient();
+const port = process.env.PORT || 5000;
+
+// Path for uploads
+let uploadsPath = path.join(__dirname, '../public/uploads');
+if (userDataPath) {
+  uploadsPath = path.join(userDataPath, 'uploads');
+  if (!fs.existsSync(uploadsPath)) {
+    fs.mkdirSync(uploadsPath, { recursive: true });
+  }
+}
+
+app.use(cors());
+app.use(express.json());
+
+// Logging middleware for debugging
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+  next();
+});
+
+// Fichiers statiques (photos)
+app.use('/uploads', express.static(uploadsPath));
+
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/categories', categoryRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/upload', uploadRoutes);
+app.use('/api/sales', saleRoutes);
+app.use('/api/customers', customerRoutes);
+app.use('/api/reports', reportRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/settings', settingRoutes);
+app.use('/api/expenses', expenseRoutes);
+app.use('/api/suppliers', supplierRoutes);
+
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', time: new Date() });
+});
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
+// Keep-alive for debugging
+setInterval(() => {
+  // console.log('Heartbeat...');
+}, 10000);
+
