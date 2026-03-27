@@ -56,11 +56,22 @@ app.use((req, res, next) => {
 app.use('/uploads', express.static(uploadsPath));
 
 // Routes
-// ... (toutes les routes déjà présentes) ...
+app.use('/api/auth', authRoutes);
+app.use('/api/categories', categoryRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/upload', uploadRoutes);
+app.use('/api/sales', saleRoutes);
+app.use('/api/customers', customerRoutes);
+app.use('/api/reports', reportRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/settings', settingRoutes);
+app.use('/api/expenses', expenseRoutes);
+app.use('/api/suppliers', supplierRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', time: new Date() });
 });
+
 
 // IMPORTANT pour Vercel : Exportez l'application
 export default app;
