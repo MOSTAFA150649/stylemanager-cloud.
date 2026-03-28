@@ -40,7 +40,7 @@ function startBackend() {
     : path.join(__dirname, 'backend', 'src', 'server.ts');
   
   const cmd = isProd ? 'node' : 'npx';
-  const args = isProd ? [backendPath] : ['ts-node', backendPath];
+  const args = isProd ? [`"${backendPath}"`] : ['ts-node', `"${backendPath}"`];
 
   backendProcess = spawn(cmd, args, {
     shell: true,
