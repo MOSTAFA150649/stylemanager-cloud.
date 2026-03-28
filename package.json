@@ -13,7 +13,7 @@
   "dependencies": {
     "@prisma/client": "^5.22.0",
     "axios": "^1.13.6",
-    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
@@ -22,11 +22,11 @@
     "pg": "^8.20.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^25.5.0",
     "electron": "^34.3.0",
     "electron-builder": "^25.1.8",
     "prisma": "^5.22.0",
-    "typescript": "^5.9.3",
-    "@types/node": "^25.5.0"
+    "typescript": "^5.9.3"
   }
 }
-
