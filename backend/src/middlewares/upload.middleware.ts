@@ -3,9 +3,19 @@ import path from 'path';
 import fs from 'fs';
 
 // Création du dossier d'upload s'il n'existe pas
-const uploadDir = path.join(__dirname, '../../public/uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
+let uploadDir = path.join(__dirname, '../../public/uploads');
+
+// Sur Vercel, on utilise /tmp car le reste du système de fichiers est en lecture seule
+if (process.env.VERCEL) {
+  uploadDir = path.join('/tmp', 'uploads');
+}
+
+try {
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+  }
+} catch (error) {
+  console.error("Impossible de créer le dossier d'upload (Lecture seule) :", error);
 }
 
 const storage = multer.diskStorage({
